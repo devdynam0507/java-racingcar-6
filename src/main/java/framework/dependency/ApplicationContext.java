@@ -2,10 +2,12 @@ package framework.dependency;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import framework.common.reflections.ConstructorAnnotationHolder;
 import framework.common.reflections.MethodAnnotationHolder;
@@ -14,18 +16,22 @@ import framework.common.reflections.ReflectionUtils;
 public final class ApplicationContext {
 
     private final Map<String, Object> instances;
-    private final Map<Class<?>, Object> injectedInstances;
+    private final Set<Object> injectedInstances;
 
     ApplicationContext() {
         instances = new HashMap<>();
-        injectedInstances = new HashMap<>();
+        injectedInstances = new HashSet<>();
     }
 
     public <T> T getInstance(Class<T> targetClass) {
-        if (!injectedInstances.containsKey(targetClass)) {
+        Optional<Object> objectOptional =
+            injectedInstances.stream()
+                    .filter(instance -> targetClass.isAssignableFrom(instance.getClass()))
+                    .findAny();
+        if (objectOptional.isEmpty()) {
             return null;
         }
-        return (T) injectedInstances.get(targetClass);
+        return (T) objectOptional.get();
     }
 
     public <T> T inject(Class<T> targetClass) {
@@ -49,7 +55,7 @@ public final class ApplicationContext {
         }
         try {
             T instance = (T) annotationHolder.getConstructor().newInstance(params);
-            injectedInstances.put(targetClass, instance);
+            injectedInstances.add(instance);
             return instance;
         } catch (Exception e) {
             return null;
@@ -72,6 +78,7 @@ public final class ApplicationContext {
                 String componentName = component.name();
                 Object newInstance = method.invoke(configureInstance);
                 instances.put(componentName, newInstance);
+                injectedInstances.add(newInstance);
             } catch (Exception e) {
                 e.printStackTrace();
             }

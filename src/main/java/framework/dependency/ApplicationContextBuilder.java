@@ -7,10 +7,12 @@ public class ApplicationContextBuilder {
 
     private final List<Object> configurations;
     private final List<Class<?>> injectTargets;
+    private final List<PostInjectListener> injectListeners;
 
     private ApplicationContextBuilder() {
         this.configurations = new ArrayList<>();
         this.injectTargets = new ArrayList<>();
+        this.injectListeners = new ArrayList<>();
     }
 
     public static ApplicationContextBuilder builder() {
@@ -27,6 +29,11 @@ public class ApplicationContextBuilder {
         return this;
     }
 
+    public ApplicationContextBuilder addListener(PostInjectListener postInjectListener) {
+        injectListeners.add(postInjectListener);
+        return this;
+    }
+
     public ApplicationContext build() {
         ApplicationContext applicationContext = new ApplicationContext();
         for (Object configuration : configurations) {
@@ -35,6 +42,7 @@ public class ApplicationContextBuilder {
         for (Class<?> injectTargetClass : injectTargets) {
             applicationContext.inject(injectTargetClass);
         }
+        injectListeners.forEach(postInjectListener -> postInjectListener.onInitialized(applicationContext));
         return applicationContext;
     }
 }

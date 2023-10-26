@@ -1,7 +1,6 @@
 package racingcar.io.validation;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class CarNameValidator implements Validation<String> {
@@ -22,10 +21,7 @@ public class CarNameValidator implements Validation<String> {
             }
             duplicateCheckSet.add(name);
         }
-        if (duplicateCheckSet.size() != names.length) {
-            return false;
-        }
-        return true;
+        return duplicateCheckSet.size() == names.length;
     }
 
     @Override
