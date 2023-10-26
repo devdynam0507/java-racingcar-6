@@ -11,9 +11,22 @@ import framework.common.reflections.ConstructorAnnotationHolder;
 import framework.common.reflections.MethodAnnotationHolder;
 import framework.common.reflections.ReflectionUtils;
 
-public class ApplicationContext {
+public final class ApplicationContext {
 
-    private final Map<String, Object> instances = new HashMap<>();
+    private final Map<String, Object> instances;
+    private final Map<Class<?>, Object> injectedInstances;
+
+    ApplicationContext() {
+        instances = new HashMap<>();
+        injectedInstances = new HashMap<>();
+    }
+
+    public <T> T getInstance(Class<T> targetClass) {
+        if (!injectedInstances.containsKey(targetClass)) {
+            return null;
+        }
+        return (T) injectedInstances.get(targetClass);
+    }
 
     public <T> T inject(Class<T> targetClass) {
         Optional<ConstructorAnnotationHolder<?>> constructor =
@@ -27,14 +40,17 @@ public class ApplicationContext {
         Object[] params = new Object[constructorSize];
         for (int i = 0; i < constructorSize; i++) {
             String componentName = parameterNames.get(i);
-            componentName = componentName.substring(0, 1).toLowerCase(Locale.ROOT) + componentName.substring(1);
+            componentName =
+                    componentName.substring(0, 1).toLowerCase(Locale.ROOT) + componentName.substring(1);
             if (!instances.containsKey(componentName)) {
                 throw new IllegalArgumentException("component not registered \"" + componentName + "\"");
             }
             params[i] = instances.get(componentName);
         }
         try {
-            return (T) annotationHolder.getConstructor().newInstance(params);
+            T instance = (T) annotationHolder.getConstructor().newInstance(params);
+            injectedInstances.put(targetClass, instance);
+            return instance;
         } catch (Exception e) {
             return null;
         }
