@@ -8,4 +8,14 @@ public class DefaultInput implements Input {
     public String nextLine() {
         return Console.readLine();
     }
+
+    @Override
+    public Integer nextInt() {
+        try {
+            String line = nextLine();
+            return Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자만 입력할 수 있습니다.");
+        }
+    }
 }
