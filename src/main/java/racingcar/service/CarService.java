@@ -10,6 +10,7 @@ public class CarService {
 
     @Inject
     public CarService(CarRepository carRepository) {
+        System.out.println("instantiated: " + carRepository);
         this.carRepository = carRepository;
     }
 

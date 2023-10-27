@@ -2,6 +2,7 @@ package racingcar.configuration;
 
 import framework.dependency.Component;
 import framework.dependency.Configuration;
+
 import racingcar.domain.CarRepository;
 import racingcar.service.CarService;
 

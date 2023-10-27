@@ -35,13 +35,7 @@ public class ApplicationContextBuilder {
     }
 
     public ApplicationContext build() {
-        ApplicationContext applicationContext = new ApplicationContext();
-        for (Object configuration : configurations) {
-            applicationContext.configure(configuration);
-        }
-        for (Class<?> injectTargetClass : injectTargets) {
-            applicationContext.inject(injectTargetClass);
-        }
+        ApplicationContext applicationContext = new ApplicationContext(configurations, injectTargets);
         injectListeners.forEach(postInjectListener -> postInjectListener.onInitialized(applicationContext));
         return applicationContext;
     }

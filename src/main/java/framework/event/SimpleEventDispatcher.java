@@ -44,10 +44,10 @@ public class SimpleEventDispatcher implements EventPublisher {
 
     private List<EventHolder> getEventListeners(Object eventListener, Class<? extends Annotation> clazz) {
         List<MethodAnnotationHolder> methods =
-            ReflectionUtils.getMethodsWithAnnotation(eventListener.getClass(), clazz);
+            ReflectionUtils.getMethodsWithAnnotation(eventListener, clazz);
         List<EventHolder> eventHolders = new ArrayList<>();
         for (MethodAnnotationHolder holder : methods) {
-            List<Class<?>> parameters = holder.getParameters();
+            List<Class<?>> parameters = holder.getParameterTypes();
             Method method = holder.getMethod();
             if (parameters.size() != 2) {
                 throw new EventListenerRegistrationException(

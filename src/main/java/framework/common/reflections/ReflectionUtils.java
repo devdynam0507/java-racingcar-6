@@ -13,8 +13,9 @@ import java.util.stream.Stream;
 public class ReflectionUtils {
 
     public static List<MethodAnnotationHolder> getMethodsWithAnnotation(
-        Class<?> clazz, Class<? extends Annotation> annotation
+        Object targetClass, Class<? extends Annotation> annotation
     ) {
+        Class<?> clazz = targetClass.getClass();
         List<MethodAnnotationHolder> methods = new ArrayList<>();
         for (Method method : clazz.getDeclaredMethods()) {
             if (!method.isAnnotationPresent(annotation)) {
@@ -22,7 +23,10 @@ public class ReflectionUtils {
             }
             Annotation attachedAnnotation = method.getAnnotation(annotation);
             List<Class<?>> parameterTypes = List.of(method.getParameterTypes());
-            methods.add(MethodAnnotationHolder.of(method, attachedAnnotation, parameterTypes));
+            List<Parameter> parameters = List.of(method.getParameters());
+            MethodAnnotationHolder methodAnnotationHolder =
+                    MethodAnnotationHolder.of(targetClass, method, attachedAnnotation, parameterTypes, parameters);
+            methods.add(methodAnnotationHolder);
         }
         return methods;
     }
@@ -41,12 +45,13 @@ public class ReflectionUtils {
         if (findConstructor == null) {
             return Optional.empty();
         }
-        List<String> parameters = Stream.of(findConstructor.getParameters())
-                  .map(Parameter::getType)
-                  .map(Class::getSimpleName)
-                  .collect(Collectors.toList());
+        List<Parameter> parameters = List.of(findConstructor.getParameters());
+        List<String> parametersNames = parameters.stream()
+                .map(Parameter::getType)
+                .map(Class::getSimpleName)
+                .toList();
         ConstructorAnnotationHolder<?> annotationHolder =
-                ConstructorAnnotationHolder.of(findConstructor, parameters);
+                ConstructorAnnotationHolder.of(findConstructor, parametersNames, parameters);
         return Optional.of(annotationHolder);
     }
 }
