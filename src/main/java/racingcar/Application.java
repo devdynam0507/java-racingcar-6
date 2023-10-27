@@ -2,10 +2,13 @@ package racingcar;
 
 import framework.dependency.ApplicationContext;
 import framework.dependency.ApplicationContextBuilder;
+import framework.event.EventPublisher;
 import racingcar.configuration.EventConfiguration;
 import racingcar.configuration.GameConfiguration;
 import racingcar.configuration.InputConfiguration;
 import racingcar.configuration.ValidationConfiguration;
+import racingcar.event.InputEvent;
+import racingcar.event.RaceBeginEvent;
 import racingcar.handlers.CarEventHandler;
 import racingcar.handlers.EventListenerInjectHandler;
 import racingcar.handlers.InputEventHandler;
@@ -23,5 +26,8 @@ public class Application {
                                 InputEventHandler.class
                         ))
                         .build();
+
+        EventPublisher eventPublisher = applicationContext.getInstance(EventPublisher.class);
+        eventPublisher.dispatch(new InputEvent());
     }
 }

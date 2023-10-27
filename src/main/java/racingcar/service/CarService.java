@@ -1,16 +1,23 @@
 package racingcar.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import camp.nextstep.edu.missionutils.Randoms;
 import framework.dependency.Inject;
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
 
 public class CarService {
 
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
     @Inject
     public CarService(CarRepository carRepository) {
-        System.out.println("instantiated: " + carRepository);
         this.carRepository = carRepository;
     }
 
@@ -20,5 +27,34 @@ public class CarService {
             Car car = Car.create(name);
             carRepository.addCar(car);
         }
+    }
+
+    public void race(int tryCount) {
+        List<Car> cars = carRepository.getCars();
+
+        System.out.println("\n실행 결과");
+        for (int i = 0; i < tryCount; i++) {
+            for (Car car : cars) {
+                int random = Randoms.pickNumberInRange(0, 9);
+                if (random >= 4) {
+                    car.increaseDistance();
+                }
+                System.out.println(car);
+            }
+            System.out.println();
+        }
+    }
+
+    public void printResults() {
+        List<Car> cars = carRepository.getCars();
+        List<Car> sortableCars = new ArrayList<>(cars);
+        sortableCars.sort(Comparator.comparing(Car::getDistance, Comparator.reverseOrder()));
+        int highestDistance = sortableCars.get(0).getDistance();
+        String winners = sortableCars.stream()
+                .filter(car -> car.getDistance() == highestDistance)
+                .map(Car::getName)
+                .collect(Collectors.joining(", "));
+
+        System.out.print("최종 우승자 : " + winners);
     }
 }

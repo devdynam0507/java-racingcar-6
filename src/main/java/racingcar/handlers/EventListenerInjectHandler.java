@@ -25,5 +25,9 @@ public class EventListenerInjectHandler implements PostInjectListener {
             return;
         }
         applicationContext.injects(handlers);
+        for (Class<?> handler : handlers) {
+            Object eventListener = applicationContext.getInstance(handler);
+            eventPublisher.registerEvent(eventListener);
+        }
     }
 }

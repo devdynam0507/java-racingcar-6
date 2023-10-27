@@ -14,11 +14,16 @@ public final class ApplicationContext {
     ApplicationContext(List<Object> configurations, List<Class<?>> injectTargets) {
         this.dependencyInjector = new ApplicationContextDependencyInjector();
         this.injectedInstances = new HashSet<>(this.dependencyInjector.configures(configurations));
-        this.dependencyInjector.injects(injectTargets, injectedInstances);
+        injects(injectTargets);
     }
 
     public <T> T getInstance(Class<T> targetClass) {
-        return null;
+        Object instance = injectedInstances.stream()
+               .filter(holder -> targetClass.isAssignableFrom(holder.getComponentClassType()))
+               .findFirst()
+               .map(ComponentHolder::getInstantiatedComponent)
+               .orElseThrow(() -> new IllegalArgumentException("Component not found " + targetClass.getName()));
+        return (T) instance;
     }
 
     public void injects(List<Class<?>> injectTargets) {

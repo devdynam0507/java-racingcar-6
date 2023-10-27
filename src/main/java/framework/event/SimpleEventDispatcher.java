@@ -23,8 +23,10 @@ public class SimpleEventDispatcher implements EventPublisher {
             Method method = eventHolder.getMethod();
             try {
                 method.invoke(eventHolder.getEventListener(), eventObject, this);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IllegalAccessException e1) {
+            } catch (InvocationTargetException e2) {
+                Throwable targetException = e2.getTargetException();
+                throw (RuntimeException) targetException;
             }
         });
     }

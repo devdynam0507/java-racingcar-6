@@ -16,6 +16,14 @@ public class Car {
         distance += 1;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
