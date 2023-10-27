@@ -3,26 +3,26 @@ package racingcar.handlers;
 import framework.dependency.Inject;
 import framework.event.EventListener;
 import framework.event.EventPublisher;
-import racingcar.domain.Cars;
-import racingcar.event.CarRaceFinishEvent;
-import racingcar.event.CarRaceStartEvent;
+import racingcar.domain.CarRepository;
+import racingcar.event.RaceEndEvent;
+import racingcar.event.RaceBeginEvent;
 
 public class CarEventHandler {
 
-    private final Cars cars;
+    private final CarRepository carRepository;
 
     @Inject
-    public CarEventHandler(Cars cars) {
-        this.cars = cars;
+    public CarEventHandler(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
     @EventListener
-    public void onCarRaceStartEvent(CarRaceStartEvent event, EventPublisher eventPublisher) {
+    public void onCarRaceStartEvent(RaceBeginEvent event, EventPublisher eventPublisher) {
 
     }
 
     @EventListener
-    public void onCarRaceFinishEvent(CarRaceFinishEvent event, EventPublisher eventPublisher) {
+    public void onCarRaceFinishEvent(RaceEndEvent event, EventPublisher eventPublisher) {
 
     }
 }

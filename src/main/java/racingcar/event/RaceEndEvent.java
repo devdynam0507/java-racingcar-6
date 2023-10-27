@@ -1,6 +1,6 @@
 package racingcar.event;
 
-public class CarRaceFinishEvent {
+public class RaceEndEvent {
 
     // Results..
 }

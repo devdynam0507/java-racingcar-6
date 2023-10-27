@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Cars {
+public class CarRepository {
 
     private final List<Car> cars;
 
-    public Cars() {
+    public CarRepository() {
         this.cars = new ArrayList<>();
     }
 
-    public Cars(Car... cars) {
+    public CarRepository(Car... cars) {
         this.cars = Arrays.asList(cars);
     }
 

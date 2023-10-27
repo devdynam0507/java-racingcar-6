@@ -3,7 +3,7 @@ package racingcar.handlers;
 import framework.dependency.Inject;
 import framework.event.EventListener;
 import framework.event.EventPublisher;
-import racingcar.event.CarRaceStartEvent;
+import racingcar.event.RaceBeginEvent;
 import racingcar.event.InputEvent;
 import racingcar.io.Input;
 import racingcar.io.validation.CarNameValidator;
@@ -29,7 +29,7 @@ public class InputEventHandler {
         System.out.println("시도할 회수는 몇회인가요?");
         Integer count = input.nextInt();
 
-        CarRaceStartEvent raceEvent = new CarRaceStartEvent(line, count);
+        RaceBeginEvent raceEvent = new RaceBeginEvent(line, count);
         eventPublisher.dispatch(raceEvent);
     }
 }
