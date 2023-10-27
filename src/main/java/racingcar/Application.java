@@ -8,9 +8,9 @@ import racingcar.configuration.GameConfiguration;
 import racingcar.configuration.InputConfiguration;
 import racingcar.configuration.ValidationConfiguration;
 import racingcar.event.InputEvent;
-import racingcar.service.CarEventHandler;
-import racingcar.service.EventListenerInjectHandler;
-import racingcar.service.InputEventHandler;
+import racingcar.handlers.CarEventHandler;
+import racingcar.handlers.EventListenerInjectHandler;
+import racingcar.handlers.InputEventHandler;
 
 public class Application {
     public static void main(String[] args) {

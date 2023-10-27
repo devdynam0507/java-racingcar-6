@@ -1,4 +1,4 @@
-package racingcar.service;
+package racingcar.handlers;
 
 import framework.dependency.Inject;
 import framework.event.EventListener;

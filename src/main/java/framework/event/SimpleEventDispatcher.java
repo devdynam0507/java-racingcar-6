@@ -51,7 +51,9 @@ public class SimpleEventDispatcher implements EventPublisher {
             Method method = holder.getMethod();
             if (parameters.size() != 2) {
                 throw new EventListenerRegistrationException(
-                    method.getName(), "An event listener can only accept one event object as its argument.");
+                    method.getName(),
+                    "The first argument of the event listener must be the Event object and "
+                    + "the second argument must be the EventPublisher.");
             }
             EventHolder eventHolder = EventHolder.create(parameters.get(0), eventListener, method);
             eventHolders.add(eventHolder);
