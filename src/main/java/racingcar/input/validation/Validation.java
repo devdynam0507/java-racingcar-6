@@ -1,4 +1,4 @@
-package racingcar.io.validation;
+package racingcar.input.validation;
 
 public interface Validation<Input> {
 

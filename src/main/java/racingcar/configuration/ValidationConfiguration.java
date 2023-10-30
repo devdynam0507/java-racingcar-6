@@ -2,7 +2,7 @@ package racingcar.configuration;
 
 import racingcar.framework.dependency.Component;
 import racingcar.framework.dependency.Configuration;
-import racingcar.io.validation.CarNameValidator;
+import racingcar.input.validation.CarNameValidator;
 
 @Configuration
 public class ValidationConfiguration {

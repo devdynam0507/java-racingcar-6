@@ -2,8 +2,8 @@ package racingcar.configuration;
 
 import racingcar.framework.dependency.Component;
 import racingcar.framework.dependency.Configuration;
-import racingcar.io.DefaultInput;
-import racingcar.io.Input;
+import racingcar.input.DefaultInput;
+import racingcar.input.Input;
 
 @Configuration
 public class InputConfiguration {

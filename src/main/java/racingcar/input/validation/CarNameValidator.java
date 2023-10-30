@@ -1,4 +1,4 @@
-package racingcar.io.validation;
+package racingcar.input.validation;
 
 import java.util.HashSet;
 import java.util.List;

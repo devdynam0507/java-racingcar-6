@@ -5,9 +5,9 @@ import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
 import racingcar.event.RaceBeginEvent;
 import racingcar.event.InputEvent;
-import racingcar.io.Input;
-import racingcar.io.validation.CarNameValidator;
-import racingcar.io.validation.Validation;
+import racingcar.input.Input;
+import racingcar.input.validation.CarNameValidator;
+import racingcar.input.validation.Validation;
 
 public class InputEventHandler {
 

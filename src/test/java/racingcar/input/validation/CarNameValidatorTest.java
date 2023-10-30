@@ -1,4 +1,4 @@
-package racingcar.io.validation;
+package racingcar.input.validation;
 
 import org.junit.jupiter.api.Test;
 

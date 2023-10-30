@@ -1,4 +1,4 @@
-package racingcar.io;
+package racingcar.input;
 
 public interface Input extends AutoCloseable {
 
