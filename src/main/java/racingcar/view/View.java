@@ -7,11 +7,8 @@ import racingcar.domain.Car;
 
 public class View {
 
-    public void printWinner(List<Car> sortedCars) {
-        String winnerNames = sortedCars.stream()
-                .map(Car::getName)
-                .collect(Collectors.joining(", "));
-        System.out.println("최종 우승자 : " + winnerNames);
+    public void printWinner(String winners) {
+        System.out.println("최종 우승자 : " + winners);
     }
 
     public void printCarStatesWithProceedStates(List<Car> cars) {

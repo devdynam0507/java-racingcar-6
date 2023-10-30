@@ -1,6 +1,7 @@
 package racingcar.handlers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import racingcar.domain.Car;
 
@@ -29,7 +30,10 @@ public class CarRaceEndEventHandler {
     @EventListener
     public void onRaceEnd(RaceEndEvent event, EventPublisher eventPublisher) {
         List<Car> winners = carQueryService.findAllByHighestCarsOrderBy(Order.DESC);
+        String winnerNames = winners.stream()
+                .map(Car::getName)
+                .collect(Collectors.joining(", "));
 
-        view.printWinner(winners);
+        view.printWinner(winnerNames);
     }
 }
