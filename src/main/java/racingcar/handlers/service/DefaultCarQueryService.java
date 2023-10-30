@@ -34,4 +34,13 @@ public class DefaultCarQueryService implements CarQueryService {
         }
         return sortableCars;
     }
+
+    @Override
+    public List<Car> findAllByHighestCarsOrderBy(Order order) {
+        List<Car> cars = findAllOrderBy(order);
+        int highestDistance = cars.get(0).getDistance();
+        return cars.stream()
+                .filter(car -> car.getDistance() == highestDistance)
+                .toList();
+    }
 }

@@ -1,14 +1,8 @@
 package racingcar.handlers;
 
 import java.util.List;
-import java.util.PrimitiveIterator;
-
-import camp.nextstep.edu.missionutils.Randoms;
-
-import racingcar.constants.AppConstants;
 
 import racingcar.domain.Car;
-import racingcar.domain.CarRepository;
 
 import racingcar.event.RaceEndEvent;
 import racingcar.event.RaceProceedEvent;
@@ -16,15 +10,24 @@ import racingcar.event.RaceProceedEvent;
 import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
+
 import racingcar.handlers.service.CarCommandService;
+import racingcar.handlers.service.CarQueryService;
+
+import racingcar.view.View;
 
 public class CarRaceProceedingEventHandler {
 
     private final CarCommandService carCommandService;
+    private final CarQueryService carQueryService;
+    private final View view;
 
     @Inject
-    public CarRaceProceedingEventHandler(CarCommandService carCommandService) {
+    public CarRaceProceedingEventHandler(
+            CarCommandService carCommandService, CarQueryService carQueryService, View view) {
         this.carCommandService = carCommandService;
+        this.carQueryService = carQueryService;
+        this.view = view;
     }
 
     @EventListener
@@ -32,12 +35,12 @@ public class CarRaceProceedingEventHandler {
         int raceCount = event.raceCount();
         carCommandService.updateAll();
 
-        System.out.println("\n실행 결과");
         for (int i = 0; i < raceCount; i++) {
             carCommandService.updateAll();
-
-            System.out.println();
         }
+
+        List<Car> cars = carQueryService.findAll();
+        view.printEachWithTitle("\n실행 결과", cars);
 
         eventPublisher.dispatch(new RaceEndEvent(raceCount));
     }

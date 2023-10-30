@@ -1,10 +1,8 @@
 package racingcar.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import racingcar.domain.Car;
-import racingcar.domain.CarRepository;
 
 import racingcar.event.RaceBeginEvent;
 import racingcar.event.RaceProceedEvent;
@@ -12,6 +10,7 @@ import racingcar.event.RaceProceedEvent;
 import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
+
 import racingcar.handlers.service.CarCommandService;
 
 public class CarRaceBeginEventHandler {
