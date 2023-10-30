@@ -13,40 +13,32 @@ import racingcar.domain.CarRepository;
 import racingcar.event.RaceEndEvent;
 import racingcar.event.RaceProceedEvent;
 
+import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
+import racingcar.handlers.service.CarCommandService;
 
 public class CarRaceProceedingEventHandler {
 
+    private final CarCommandService carCommandService;
+
+    @Inject
+    public CarRaceProceedingEventHandler(CarCommandService carCommandService) {
+        this.carCommandService = carCommandService;
+    }
+
     @EventListener
     public void onRaceProceed(RaceProceedEvent event, EventPublisher eventPublisher) {
-        CarRepository carRepository = event.carRepository();
         int raceCount = event.raceCount();
-        List<Car> cars = carRepository.getCars();
+        carCommandService.updateAll();
 
         System.out.println("\n실행 결과");
         for (int i = 0; i < raceCount; i++) {
-            race(cars);
-            printCarStates(cars);
+            carCommandService.updateAll();
+
             System.out.println();
         }
 
-        eventPublisher.dispatch(new RaceEndEvent(cars, raceCount));
-    }
-
-    private void race(List<Car> cars) {
-        for (Car car : cars) {
-            int random = Randoms.pickNumberInRange(0, 9);
-            if (random < AppConstants.CAR_FORWARD_CONDITION_VALUE) {
-                continue;
-            }
-            car.increaseDistance();
-        }
-    }
-
-    private void printCarStates(List<Car> cars) {
-        for (Car car : cars) {
-            System.out.println(car);
-        }
+        eventPublisher.dispatch(new RaceEndEvent(raceCount));
     }
 }

@@ -1,5 +1,8 @@
 package racingcar.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
 
@@ -9,14 +12,15 @@ import racingcar.event.RaceProceedEvent;
 import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
+import racingcar.handlers.service.CarCommandService;
 
 public class CarRaceBeginEventHandler {
 
-    private final CarRepository carRepository;
+    private final CarCommandService carCommandService;
 
     @Inject
-    public CarRaceBeginEventHandler(CarRepository carRepository) {
-        this.carRepository = carRepository;
+    public CarRaceBeginEventHandler(CarCommandService carCommandService) {
+        this.carCommandService = carCommandService;
     }
 
     @EventListener
@@ -24,12 +28,10 @@ public class CarRaceBeginEventHandler {
         String carNameText = event.inputText();
         Integer raceCount = event.raceCount();
 
-        String[] names = carNameText.split(",");
-        for (String name : names) {
-            Car car = Car.create(name);
-            carRepository.addCar(car);
-        }
+        List<String> names = List.of(carNameText.split(","));
+        List<Car> cars = carCommandService.createCars(names);
+        carCommandService.saveAll(cars);
 
-        eventPublisher.dispatch(new RaceProceedEvent(carRepository, raceCount));
+        eventPublisher.dispatch(new RaceProceedEvent(raceCount));
     }
 }

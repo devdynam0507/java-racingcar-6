@@ -21,6 +21,8 @@ public class CarRepository {
         cars.add(car);
     }
 
+    public void addAll(List<Car> cars) { this.cars.addAll(cars); }
+
     public List<Car> getCars() {
         return Collections.unmodifiableList(cars);
     }
