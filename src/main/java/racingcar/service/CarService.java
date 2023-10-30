@@ -1,14 +1,13 @@
 package racingcar.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import framework.dependency.Inject;
+import racingcar.constants.AppConstants;
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
 
@@ -36,7 +35,7 @@ public class CarService {
         for (int i = 0; i < tryCount; i++) {
             for (Car car : cars) {
                 int random = Randoms.pickNumberInRange(0, 9);
-                if (random >= 4) {
+                if (random >= AppConstants.CAR_FORWARD_CONDITION_VALUE) {
                     car.increaseDistance();
                 }
                 System.out.println(car);
