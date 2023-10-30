@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import racingcar.constants.AppConstants;
+import racingcar.constants.InputConstants;
 
 public class CarNameValidator implements Validation<String> {
 
@@ -32,7 +32,7 @@ public class CarNameValidator implements Validation<String> {
     }
 
     private void validationThrowsIfNotMinimumAmountOfCars(List<String> names) {
-        if (names.size() < AppConstants.MINIMUM_AMOUNT_CARS) {
+        if (names.size() < InputConstants.MINIMUM_AMOUNT_CARS) {
             throw new IllegalArgumentException("원활한 자동차 경주를 위해 2대 이상 입력 해주세요.");
         }
     }
@@ -40,11 +40,11 @@ public class CarNameValidator implements Validation<String> {
     private void validationThrowsIfIncorrectNameLength(List<String> names) {
         for (String name : names) {
             int nameLength = name.length();
-            if (nameLength <= AppConstants.MAXIMUM_CAR_NAME_LENGTH && nameLength > 0) {
+            if (nameLength <= InputConstants.MAXIMUM_CAR_NAME_LENGTH && nameLength > 0) {
                 continue;
             }
             throw new IllegalArgumentException("자동차 이름은 1자 이상 " +
-                    AppConstants.MAXIMUM_CAR_NAME_LENGTH + "자 이하 이어야 합니다");
+                    InputConstants.MAXIMUM_CAR_NAME_LENGTH + "자 이하 이어야 합니다");
         }
     }
 

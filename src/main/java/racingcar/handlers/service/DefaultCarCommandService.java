@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import camp.nextstep.edu.missionutils.Randoms;
-import racingcar.constants.AppConstants;
+import racingcar.constants.GameConstants;
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
 import racingcar.framework.dependency.Inject;
@@ -20,7 +20,7 @@ public class DefaultCarCommandService implements CarCommandService {
 
     @Override
     public void update(Car car, int randomForwardNumber) {
-        if (randomForwardNumber < AppConstants.CAR_FORWARD_CONDITION_VALUE) {
+        if (randomForwardNumber < GameConstants.CAR_FORWARD_CONDITION_VALUE) {
             return;
         }
         car.increaseDistance();
