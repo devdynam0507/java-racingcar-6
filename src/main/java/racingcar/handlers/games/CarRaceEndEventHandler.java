@@ -1,4 +1,4 @@
-package racingcar.handlers;
+package racingcar.handlers.games;
 
 import java.util.List;
 import java.util.stream.Collectors;

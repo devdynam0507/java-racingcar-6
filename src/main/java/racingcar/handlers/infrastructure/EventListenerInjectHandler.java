@@ -1,4 +1,4 @@
-package racingcar.handlers;
+package racingcar.handlers.infrastructure;
 
 import java.util.List;
 

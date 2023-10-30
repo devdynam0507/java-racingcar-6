@@ -1,4 +1,4 @@
-package racingcar.handlers;
+package racingcar.handlers.games;
 
 import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
