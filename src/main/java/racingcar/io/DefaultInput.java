@@ -18,4 +18,9 @@ public class DefaultInput implements Input {
             throw new IllegalArgumentException("숫자만 입력할 수 있습니다.");
         }
     }
+
+    @Override
+    public void close() throws Exception {
+        Console.close();
+    }
 }

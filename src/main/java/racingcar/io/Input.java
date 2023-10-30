@@ -1,6 +1,6 @@
 package racingcar.io;
 
-public interface Input {
+public interface Input extends AutoCloseable {
 
     String nextLine();
 
