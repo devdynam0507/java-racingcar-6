@@ -33,14 +33,13 @@ public class CarRaceProceedingEventHandler {
     @EventListener
     public void onRaceProceed(RaceProceedEvent event, EventPublisher eventPublisher) {
         int raceCount = event.raceCount();
-        carCommandService.updateAll();
+        List<Car> cars = carQueryService.findAll();
 
+        view.printCarProceedTitle();
         for (int i = 0; i < raceCount; i++) {
             carCommandService.updateAll();
+            view.printCarStates(cars);
         }
-
-        List<Car> cars = carQueryService.findAll();
-        view.printEachWithTitle("\n실행 결과", cars);
 
         eventPublisher.dispatch(new RaceEndEvent(raceCount));
     }

@@ -8,25 +8,28 @@ import racingcar.event.InputEvent;
 import racingcar.input.Input;
 import racingcar.input.validation.CarNameValidator;
 import racingcar.input.validation.Validation;
+import racingcar.view.View;
 
 public class InputEventHandler {
 
     private final Input input;
     private final Validation<String> carNameValidator;
+    private final View view;
 
     @Inject
-    public InputEventHandler(Input input, CarNameValidator carNameValidator) {
+    public InputEventHandler(Input input, CarNameValidator carNameValidator, View view) {
         this.input = input;
         this.carNameValidator = carNameValidator;
+        this.view = view;
     }
 
     @EventListener
     public void onInput(InputEvent event, EventPublisher eventPublisher) {
-        System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+        view.printCarNameInputText();
         String carNameText = input.nextLine();
         carNameValidator.validationThrowsIfFailed(carNameText);
 
-        System.out.println("시도할 회수는 몇회인가요?");
+        view.printRaceCountText();
         Integer raceCount = input.nextInt();
 
         eventPublisher.dispatch(new RaceBeginEvent(carNameText, raceCount));
