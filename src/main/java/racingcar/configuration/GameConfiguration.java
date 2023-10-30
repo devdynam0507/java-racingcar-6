@@ -4,10 +4,12 @@ import racingcar.framework.dependency.Component;
 import racingcar.framework.dependency.Configuration;
 
 import racingcar.domain.CarRepository;
+
 import racingcar.handlers.service.CarCommandService;
 import racingcar.handlers.service.CarQueryService;
 import racingcar.handlers.service.DefaultCarCommandService;
 import racingcar.handlers.service.DefaultCarQueryService;
+
 import racingcar.view.View;
 
 @Configuration

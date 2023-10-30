@@ -3,8 +3,9 @@ package racingcar.configuration;
 import racingcar.handlers.games.CarRaceBeginEventHandler;
 import racingcar.handlers.games.CarRaceEndEventHandler;
 import racingcar.handlers.games.CarRaceProceedingEventHandler;
-import racingcar.handlers.infrastructure.EventListenerInjectHandler;
 import racingcar.handlers.games.InputEventHandler;
+
+import racingcar.handlers.infrastructure.EventListenerInjectHandler;
 
 public class AppConfiguration {
 

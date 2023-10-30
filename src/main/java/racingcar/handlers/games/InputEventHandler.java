@@ -4,11 +4,13 @@ import racingcar.framework.dependency.Inject;
 import racingcar.framework.dependency.Qualifier;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
+
 import racingcar.event.RaceBeginEvent;
 import racingcar.event.InputEvent;
+
 import racingcar.input.Input;
-import racingcar.input.validation.CarNameValidator;
 import racingcar.input.validation.Validation;
+
 import racingcar.view.View;
 
 public class InputEventHandler {

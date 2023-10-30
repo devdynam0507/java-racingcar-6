@@ -6,6 +6,7 @@ import java.util.List;
 
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
+
 import racingcar.framework.dependency.Inject;
 
 public class DefaultCarQueryService implements CarQueryService {

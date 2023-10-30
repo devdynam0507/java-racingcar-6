@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import camp.nextstep.edu.missionutils.Randoms;
+
 import racingcar.constants.GameConstants;
+
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;
+
 import racingcar.framework.dependency.Inject;
 
 public class DefaultCarCommandService implements CarCommandService {
