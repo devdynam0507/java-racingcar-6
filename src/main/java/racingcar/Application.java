@@ -8,7 +8,9 @@ import racingcar.configuration.GameConfiguration;
 import racingcar.configuration.InputConfiguration;
 import racingcar.configuration.ValidationConfiguration;
 import racingcar.event.InputEvent;
-import racingcar.handlers.CarEventHandler;
+import racingcar.handlers.CarRaceBeginEventHandler;
+import racingcar.handlers.CarRaceEndEventHandler;
+import racingcar.handlers.CarRaceProceedingEventHandler;
 import racingcar.handlers.EventListenerInjectHandler;
 import racingcar.handlers.InputEventHandler;
 
@@ -20,7 +22,9 @@ public class Application {
                 .configuration(new InputConfiguration())
                 .configuration(new ValidationConfiguration())
                 .addListener(new EventListenerInjectHandler(
-                        CarEventHandler.class,
+                        CarRaceBeginEventHandler.class,
+                        CarRaceProceedingEventHandler.class,
+                        CarRaceEndEventHandler.class,
                         InputEventHandler.class
                 ))
                 .build();

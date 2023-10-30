@@ -41,7 +41,11 @@ public class ReflectionUtils {
             break;
         }
         if (findConstructor == null) {
-            return Optional.empty();
+            try {
+                findConstructor = getDefaultConstructor(clazz);
+            } catch (NoSuchMethodException e) {
+                return Optional.empty();
+            }
         }
         List<Parameter> parameters = List.of(findConstructor.getParameters());
         List<String> parametersNames = parameters.stream()
@@ -51,5 +55,9 @@ public class ReflectionUtils {
         ConstructorAnnotationHolder<?> annotationHolder =
                 ConstructorAnnotationHolder.of(findConstructor, parametersNames, parameters);
         return Optional.of(annotationHolder);
+    }
+
+    private static Constructor<?> getDefaultConstructor(Class<?> clazz) throws NoSuchMethodException {
+        return clazz.getConstructor();
     }
 }

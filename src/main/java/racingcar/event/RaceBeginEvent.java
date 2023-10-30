@@ -1,3 +1,3 @@
 package racingcar.event;
 
-public record RaceBeginEvent(String inputText, Integer tryCount) {}
+public record RaceBeginEvent(String inputText, Integer raceCount) {}
