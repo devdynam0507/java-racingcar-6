@@ -1,5 +1,6 @@
 package racingcar.framework.dependency;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ import racingcar.framework.common.reflections.ConstructorAnnotationHolder;
 import racingcar.framework.common.reflections.MethodAnnotationHolder;
 import racingcar.framework.common.reflections.ReflectionUtils;
 import racingcar.framework.common.utils.Strings;
+import racingcar.framework.dependency.exceptions.ComponentCandidateException;
+import racingcar.framework.dependency.exceptions.ComponentCreationException;
+import racingcar.framework.dependency.exceptions.ComponentNotFoundException;
 import racingcar.framework.dependency.holder.ComponentHolder;
 
 public class ApplicationContextDependencyInjector implements DependencyInjector {
@@ -29,7 +33,7 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
                    .filter(componentHolder -> componentHolder.componentName().equals(targetComponentName))
                    .findFirst();
             if (candidate.isEmpty()) {
-                throw new IllegalArgumentException("More than one component of the same type was injected.");
+                throw new ComponentNotFoundException("More than one component of the same type was injected.");
             }
             return candidate.get();
         }
@@ -37,11 +41,12 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
                 .filter(component -> parameter.getType().isAssignableFrom(component.getComponentClassType()))
                 .toList();
         if (candidates.isEmpty()) {
-            throw new IllegalArgumentException("More than one component of the same type was injected.");
+            throw new ComponentNotFoundException("More than one component of the same type was injected.");
         }
         if (candidates.size() > 1) {
-            throw new IllegalArgumentException("It is difficult to decide because there is more than one of the same "
-                                               + "component. Use the @Qualifier annotation.");
+            throw new ComponentCandidateException(
+                    "It is difficult to decide because there is more than one of the same "
+                    + "component. Use the @Qualifier annotation.");
         }
         return candidates.get(0);
     }
@@ -84,7 +89,6 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
 
         List<ComponentHolder> createdInstances = new ArrayList<>();
         List<MethodAnnotationHolder> injectableHolders = new ArrayList<>();
-        Map<String, Boolean> componentNameCache = new HashMap<>();
         for (MethodAnnotationHolder methodHolder : methodHolders) {
             if (methodHolder.getParameterTypes().size() > 0) {
                 injectableHolders.add(methodHolder);
@@ -106,9 +110,10 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
     public void injects(List<Class<?>> injectTargets, Set<ComponentHolder> createdInstances) {
         for (Class<?> targetClass : injectTargets) {
             Optional<ConstructorAnnotationHolder<?>> constructor =
-                ReflectionUtils.getConstructorWithAnnotation(targetClass, Inject.class);
+                    ReflectionUtils.getConstructorWithAnnotation(targetClass, Inject.class);
             if (constructor.isEmpty()) {
-                continue;
+                throw new ComponentCreationException(
+                        "The component constructor you want to register must have one @Inject annotation.");
             }
             ConstructorAnnotationHolder<?> constructorHolder = constructor.get();
             List<Parameter> parameters = constructorHolder.getParameters();
@@ -134,13 +139,12 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
                 componentName = Strings.toLowerCaseFirstLetter(method.getName());
             }
             if (componentNameCache.containsKey(componentName)) {
-                throw new IllegalArgumentException("component of '" + componentName + "' already exists.");
+                throw new ComponentCreationException("component of '" + componentName + "' already exists.");
             }
             ComponentHolder componentHolder = new ComponentHolder(componentName, newInstance);
             componentNameCache.put(componentName, true);
             return componentHolder;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e2) {
             return null;
         }
     }
@@ -152,7 +156,6 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
             componentNameCache.put(componentName, true);
             return new ComponentHolder(componentName, instance);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

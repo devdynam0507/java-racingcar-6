@@ -13,7 +13,9 @@ public final class ApplicationContext {
 
     ApplicationContext(List<Object> configurations, List<Class<?>> injectTargets) {
         this.dependencyInjector = new ApplicationContextDependencyInjector();
-        this.injectedInstances = new HashSet<>(this.dependencyInjector.configures(configurations));
+        this.injectedInstances = new HashSet<>();
+
+        configure(configurations);
         injects(injectTargets);
     }
 
@@ -26,7 +28,21 @@ public final class ApplicationContext {
         return (T) instance;
     }
 
+    public <T> T getInstance(String componentName) {
+        Object instance = injectedInstances.stream()
+                .filter(holder -> holder.componentName().equals(componentName))
+                .findFirst()
+                .map(ComponentHolder::instantiatedComponent)
+                .orElseThrow(() -> new IllegalArgumentException("Component not found " + componentName));
+        return (T) instance;
+    }
+
     public void injects(List<Class<?>> injectTargets) {
         dependencyInjector.injects(injectTargets, injectedInstances);
+    }
+
+    public void configure(List<Object> configures) {
+        HashSet<ComponentHolder> componentHolders = new HashSet<>(dependencyInjector.configures(configures));
+        injectedInstances.addAll(componentHolders);
     }
 }
