@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import framework.common.reflections.ConstructorAnnotationHolder;
 import framework.common.reflections.MethodAnnotationHolder;
@@ -20,13 +18,15 @@ import framework.dependency.holder.ComponentHolder;
 
 public class ApplicationContextDependencyInjector implements DependencyInjector {
 
+    private final Map<String, Boolean> componentNameCache = new HashMap<>();
+
     private ComponentHolder findComponent(Collection<ComponentHolder> componentHolders, Parameter parameter) {
         if (parameter.isAnnotationPresent(Qualifier.class)) {
             Qualifier qualifier = parameter.getAnnotation(Qualifier.class);
             String targetComponentName = qualifier.name();
             Optional<ComponentHolder> candidate = componentHolders.stream()
-                   .filter(componentHolder -> componentHolder.getComponentName() != null)
-                   .filter(componentHolder -> componentHolder.getComponentName().equals(targetComponentName))
+                   .filter(componentHolder -> componentHolder.componentName() != null)
+                   .filter(componentHolder -> componentHolder.componentName().equals(targetComponentName))
                    .findFirst();
             if (candidate.isEmpty()) {
                 throw new IllegalArgumentException("More than one component of the same type was injected.");
@@ -57,7 +57,7 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
             Object[] arguments = new Object[parameters.size()];
             int index = 0;
             for (Parameter parameter : parameters) {
-                arguments[index++] = findComponent(createdInstances, parameter).getInstantiatedComponent();
+                arguments[index++] = findComponent(createdInstances, parameter).instantiatedComponent();
             }
             try {
                 Component component = method.getAnnotation(Component.class);
@@ -94,22 +94,8 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
             if (method.getReturnType() == Void.class) {
                 continue;
             }
-            try {
-                Component component = (Component) methodHolder.getAnnotation();
-                Object newInstance = method.invoke(methodHolder.getMemberInstanceOfMethod());
-                String componentName = component.name();
-                if (componentName == null || componentName.isBlank()) {
-                    componentName = Strings.toLowerCaseFirstLetter(method.getName());
-                }
-                if (componentNameCache.containsKey(componentName)) {
-                    throw new IllegalArgumentException("component of '" + componentName + "' already exists.");
-                }
-                ComponentHolder componentHolder = new ComponentHolder(componentName, newInstance);
-                createdInstances.add(componentHolder);
-                componentNameCache.put(componentName, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            ComponentHolder componentHolder = createComponent(methodHolder);
+            createdInstances.add(componentHolder);
         }
         postInjects(createdInstances, injectableHolders);
 
@@ -120,7 +106,7 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
     public void injects(List<Class<?>> injectTargets, Set<ComponentHolder> createdInstances) {
         for (Class<?> targetClass : injectTargets) {
             Optional<ConstructorAnnotationHolder<?>> constructor =
-                    ReflectionUtils.getConstructorWithAnnotation(targetClass, Inject.class);
+                ReflectionUtils.getConstructorWithAnnotation(targetClass, Inject.class);
             if (constructor.isEmpty()) {
                 continue;
             }
@@ -131,16 +117,43 @@ public class ApplicationContextDependencyInjector implements DependencyInjector 
             for (int i = 0; i < constructorSize; i++) {
                 Parameter constructorParameter = parameters.get(i);
                 ComponentHolder component = findComponent(createdInstances, constructorParameter);
-                params[i] = component.getInstantiatedComponent();
+                params[i] = component.instantiatedComponent();
             }
-            try {
-                Object instance = constructorHolder.getConstructor().newInstance(params);
-                String componentName = Strings.toLowerCaseFirstLetter(instance.getClass().getSimpleName());
-                ComponentHolder componentHolder = new ComponentHolder(componentName, instance);
-                createdInstances.add(componentHolder);
-            } catch (Exception e) {
-                e.printStackTrace();
+            ComponentHolder component = createComponent(constructorHolder, params);
+            createdInstances.add(component);
+        }
+    }
+
+    ComponentHolder createComponent(MethodAnnotationHolder methodHolder) {
+        try {
+            Method method = methodHolder.getMethod();
+            Component component = (Component) methodHolder.getAnnotation();
+            Object newInstance = method.invoke(methodHolder.getMemberInstanceOfMethod());
+            String componentName = component.name();
+            if (componentName == null || componentName.isBlank()) {
+                componentName = Strings.toLowerCaseFirstLetter(method.getName());
             }
+            if (componentNameCache.containsKey(componentName)) {
+                throw new IllegalArgumentException("component of '" + componentName + "' already exists.");
+            }
+            ComponentHolder componentHolder = new ComponentHolder(componentName, newInstance);
+            componentNameCache.put(componentName, true);
+            return componentHolder;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    ComponentHolder createComponent(ConstructorAnnotationHolder<?> constructorHolder, Object... params) {
+        try {
+            Object instance = constructorHolder.getConstructor().newInstance(params);
+            String componentName = Strings.toLowerCaseFirstLetter(instance.getClass().getSimpleName());
+            componentNameCache.put(componentName, true);
+            return new ComponentHolder(componentName, instance);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

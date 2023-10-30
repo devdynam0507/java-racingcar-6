@@ -21,7 +21,7 @@ public final class ApplicationContext {
         Object instance = injectedInstances.stream()
                .filter(holder -> targetClass.isAssignableFrom(holder.getComponentClassType()))
                .findFirst()
-               .map(ComponentHolder::getInstantiatedComponent)
+               .map(ComponentHolder::instantiatedComponent)
                .orElseThrow(() -> new IllegalArgumentException("Component not found " + targetClass.getName()));
         return (T) instance;
     }
