@@ -26,7 +26,7 @@ public class CarEventHandler {
         carService.registerCars(inputText);
         carService.race(tryCount);
 
-        eventPublisher.dispatch(RaceEvent.class);
+        eventPublisher.dispatch(RaceEndEvent.class);
     }
 
     @EventListener

@@ -41,9 +41,11 @@ class CarNameValidatorTest {
 
     @Test
     void 정상적인_입력() {
-        assertTrue(validator.validation("자동차1,자동차2,"));
-        assertTrue(validator.validation("자동차1,자동차2,자동차3"));
-        assertTrue(validator.validation("자동차1,자동차2,자동차3,자동차4"));
-        assertTrue(validator.validation("자동차1,자동차2,자동차3,자동차4,자동차5"));
+        assertAll(
+                () -> validator.validationThrowsIfFailed("자동차1,자동차2,"),
+                () -> validator.validationThrowsIfFailed("자동차1,자동차2,자동차3"),
+                () -> validator.validationThrowsIfFailed("자동차1,자동차2,자동차3,자동차4"),
+                () -> validator.validationThrowsIfFailed("자동차1,자동차2,자동차3,자동차4,자동차5")
+        );
     }
 }
