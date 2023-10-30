@@ -1,10 +1,12 @@
 package racingcar.handlers;
 
+import racingcar.event.RaceEvent;
 import racingcar.framework.dependency.Inject;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
 import racingcar.event.RaceEndEvent;
 import racingcar.event.RaceBeginEvent;
+import racingcar.io.Input;
 import racingcar.service.CarService;
 
 public class CarEventHandler {
@@ -24,7 +26,7 @@ public class CarEventHandler {
         carService.registerCars(inputText);
         carService.race(tryCount);
 
-        eventPublisher.dispatch(new RaceEndEvent());
+        eventPublisher.dispatch(RaceEvent.class);
     }
 
     @EventListener
