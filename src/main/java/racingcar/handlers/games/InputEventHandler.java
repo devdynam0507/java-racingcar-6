@@ -1,6 +1,7 @@
 package racingcar.handlers.games;
 
 import racingcar.framework.dependency.Inject;
+import racingcar.framework.dependency.Qualifier;
 import racingcar.framework.event.EventListener;
 import racingcar.framework.event.EventPublisher;
 import racingcar.event.RaceBeginEvent;
@@ -17,7 +18,11 @@ public class InputEventHandler {
     private final View view;
 
     @Inject
-    public InputEventHandler(Input input, CarNameValidator carNameValidator, View view) {
+    public InputEventHandler(
+            Input input,
+            @Qualifier(name = "carNameValidator") Validation<String> carNameValidator,
+            View view
+    ) {
         this.input = input;
         this.carNameValidator = carNameValidator;
         this.view = view;
