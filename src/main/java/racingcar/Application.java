@@ -13,6 +13,6 @@ public class Application {
                 .configurations(configurations())
                 .build();
 
-        eventPublisher.dispatch(new InputEvent());
+        eventPublisher.dispatch(InputEvent.class);
     }
 }
