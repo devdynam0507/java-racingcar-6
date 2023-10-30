@@ -1,35 +1,18 @@
 package racingcar;
 
-import racingcar.framework.dependency.ApplicationContext;
-import racingcar.framework.dependency.ApplicationContextBuilder;
+import racingcar.framework.event.EventDrivenApplication;
 import racingcar.framework.event.EventPublisher;
-import racingcar.configuration.EventConfiguration;
-import racingcar.configuration.GameConfiguration;
-import racingcar.configuration.InputConfiguration;
-import racingcar.configuration.ValidationConfiguration;
+
 import racingcar.event.InputEvent;
-import racingcar.handlers.CarRaceBeginEventHandler;
-import racingcar.handlers.CarRaceEndEventHandler;
-import racingcar.handlers.CarRaceProceedingEventHandler;
-import racingcar.handlers.EventListenerInjectHandler;
-import racingcar.handlers.InputEventHandler;
+
+import static racingcar.configuration.AppConfiguration.*;
 
 public class Application {
     public static void main(String[] args) {
-        ApplicationContext applicationContext = ApplicationContextBuilder.builder()
-                .configuration(new EventConfiguration())
-                .configuration(new GameConfiguration())
-                .configuration(new InputConfiguration())
-                .configuration(new ValidationConfiguration())
-                .addListener(new EventListenerInjectHandler(
-                        CarRaceBeginEventHandler.class,
-                        CarRaceProceedingEventHandler.class,
-                        CarRaceEndEventHandler.class,
-                        InputEventHandler.class
-                ))
+        EventPublisher eventPublisher = new EventDrivenApplication(eventDrivenConfiguration())
+                .configurations(configurations())
                 .build();
 
-        EventPublisher eventPublisher = applicationContext.getInstance(EventPublisher.class);
         eventPublisher.dispatch(new InputEvent());
     }
 }

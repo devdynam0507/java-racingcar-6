@@ -3,13 +3,13 @@ package racingcar.framework.dependency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicationContextBuilder {
+public class ApplicationContextBuilder implements DependencyBuilder<ApplicationContextBuilder, ApplicationContext> {
 
     private final List<Object> configurations;
     private final List<Class<?>> injectTargets;
     private final List<PostInjectListener> injectListeners;
 
-    private ApplicationContextBuilder() {
+    protected ApplicationContextBuilder() {
         this.configurations = new ArrayList<>();
         this.injectTargets = new ArrayList<>();
         this.injectListeners = new ArrayList<>();
@@ -19,17 +19,36 @@ public class ApplicationContextBuilder {
         return new ApplicationContextBuilder();
     }
 
-    public ApplicationContextBuilder configuration(Object object) {
-        configurations.add(object);
+    @Override
+    public ApplicationContextBuilder configuration(Object configuration) {
+        configurations.add(configuration);
         return this;
     }
 
+    @Override
+    public ApplicationContextBuilder configurations(Object... configurations) {
+        for (Object configuration : configurations) {
+            configuration(configuration);
+        }
+        return this;
+    }
+
+    @Override
     public ApplicationContextBuilder inject(Class<?> injectTargetClass) {
         injectTargets.add(injectTargetClass);
         return this;
     }
 
-    public ApplicationContextBuilder addListener(PostInjectListener postInjectListener) {
+    @Override
+    public ApplicationContextBuilder injects(Class<?>... injectTargetClasses) {
+        for (Class<?> injectTargetClass : injectTargetClasses) {
+            inject(injectTargetClass);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationContextBuilder addPostInjectionHandler(PostInjectListener postInjectListener) {
         injectListeners.add(postInjectListener);
         return this;
     }
