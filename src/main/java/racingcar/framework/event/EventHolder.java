@@ -1,4 +1,4 @@
-package framework.event;
+package racingcar.framework.event;
 
 import java.lang.reflect.Method;
 

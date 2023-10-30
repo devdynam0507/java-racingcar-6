@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import camp.nextstep.edu.missionutils.Randoms;
-import framework.dependency.Inject;
+import racingcar.framework.dependency.Inject;
 import racingcar.constants.AppConstants;
 import racingcar.domain.Car;
 import racingcar.domain.CarRepository;

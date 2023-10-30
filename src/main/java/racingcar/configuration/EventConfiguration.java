@@ -1,9 +1,9 @@
 package racingcar.configuration;
 
-import framework.dependency.Component;
-import framework.dependency.Configuration;
-import framework.event.EventPublisher;
-import framework.event.SimpleEventDispatcher;
+import racingcar.framework.dependency.Component;
+import racingcar.framework.dependency.Configuration;
+import racingcar.framework.event.EventPublisher;
+import racingcar.framework.event.SimpleEventDispatcher;
 
 @Configuration
 public class EventConfiguration {

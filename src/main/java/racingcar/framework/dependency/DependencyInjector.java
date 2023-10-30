@@ -1,9 +1,9 @@
-package framework.dependency;
+package racingcar.framework.dependency;
 
 import java.util.List;
 import java.util.Set;
 
-import framework.dependency.holder.ComponentHolder;
+import racingcar.framework.dependency.holder.ComponentHolder;
 
 public interface DependencyInjector {
 

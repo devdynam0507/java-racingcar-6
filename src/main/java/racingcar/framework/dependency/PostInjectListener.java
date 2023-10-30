@@ -1,4 +1,4 @@
-package framework.dependency;
+package racingcar.framework.dependency;
 
 public interface PostInjectListener {
 

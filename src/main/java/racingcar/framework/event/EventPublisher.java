@@ -1,4 +1,4 @@
-package framework.event;
+package racingcar.framework.event;
 
 public interface EventPublisher extends EventRegistry {
 

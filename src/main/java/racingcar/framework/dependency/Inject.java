@@ -1,4 +1,4 @@
-package framework.dependency;
+package racingcar.framework.dependency;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

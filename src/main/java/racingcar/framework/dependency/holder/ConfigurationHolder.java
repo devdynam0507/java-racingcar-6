@@ -1,8 +1,8 @@
-package framework.dependency.holder;
+package racingcar.framework.dependency.holder;
 
 import java.util.List;
 
-import framework.common.reflections.MethodAnnotationHolder;
+import racingcar.framework.common.reflections.MethodAnnotationHolder;
 
 public class ConfigurationHolder {
 

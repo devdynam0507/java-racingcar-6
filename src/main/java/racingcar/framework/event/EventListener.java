@@ -1,4 +1,4 @@
-package framework.event;
+package racingcar.framework.event;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

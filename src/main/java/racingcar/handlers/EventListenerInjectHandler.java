@@ -2,9 +2,9 @@ package racingcar.handlers;
 
 import java.util.List;
 
-import framework.dependency.ApplicationContext;
-import framework.dependency.PostInjectListener;
-import framework.event.EventPublisher;
+import racingcar.framework.dependency.ApplicationContext;
+import racingcar.framework.dependency.PostInjectListener;
+import racingcar.framework.event.EventPublisher;
 
 public class EventListenerInjectHandler implements PostInjectListener {
 

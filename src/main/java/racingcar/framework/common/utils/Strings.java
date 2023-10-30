@@ -1,4 +1,4 @@
-package framework.common.utils;
+package racingcar.framework.common.utils;
 
 public class Strings {
 

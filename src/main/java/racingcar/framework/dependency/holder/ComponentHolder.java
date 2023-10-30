@@ -1,4 +1,4 @@
-package framework.dependency.holder;
+package racingcar.framework.dependency.holder;
 
 public record ComponentHolder(String componentName, Object instantiatedComponent) {
 

@@ -1,4 +1,4 @@
-package framework.event;
+package racingcar.framework.event;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import framework.common.reflections.MethodAnnotationHolder;
-import framework.common.reflections.ReflectionUtils;
-import framework.event.exceptions.EventListenerRegistrationException;
+import racingcar.framework.common.reflections.MethodAnnotationHolder;
+import racingcar.framework.common.reflections.ReflectionUtils;
+import racingcar.framework.event.exceptions.EventListenerRegistrationException;
 
 public class SimpleEventDispatcher implements EventPublisher {
 

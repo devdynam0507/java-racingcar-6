@@ -1,4 +1,4 @@
-package framework.dependency;
+package racingcar.framework.dependency;
 
 import java.util.ArrayList;
 import java.util.List;

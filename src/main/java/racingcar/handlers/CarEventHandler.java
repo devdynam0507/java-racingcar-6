@@ -1,12 +1,10 @@
 package racingcar.handlers;
 
-import framework.dependency.Inject;
-import framework.event.EventListener;
-import framework.event.EventPublisher;
-import racingcar.domain.CarRepository;
+import racingcar.framework.dependency.Inject;
+import racingcar.framework.event.EventListener;
+import racingcar.framework.event.EventPublisher;
 import racingcar.event.RaceEndEvent;
 import racingcar.event.RaceBeginEvent;
-import racingcar.event.RaceEvent;
 import racingcar.service.CarService;
 
 public class CarEventHandler {

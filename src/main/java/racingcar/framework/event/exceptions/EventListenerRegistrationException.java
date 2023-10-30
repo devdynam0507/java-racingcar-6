@@ -1,4 +1,4 @@
-package framework.event.exceptions;
+package racingcar.framework.event.exceptions;
 
 public class EventListenerRegistrationException extends EventListenerException {
 
