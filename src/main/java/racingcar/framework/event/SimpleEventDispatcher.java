@@ -19,7 +19,17 @@ public class SimpleEventDispatcher implements EventPublisher {
 
     @Override
     public void dispatch(Object eventObject) {
-        List<EventHolder> eventHolders = getEventListener(eventObject.getClass());
+        dispatch(eventObject.getClass(), eventObject);
+    }
+
+    @Override
+    public void dispatch(Class<?> eventClass) {
+        dispatch(eventClass, null);
+    }
+
+    @Override
+    public void dispatch(Class<?> eventClass, Object eventObject) {
+        List<EventHolder> eventHolders = getEventListener(eventClass);
         eventHolders.forEach(eventHolder -> {
             Method method = eventHolder.getMethod();
             try {

@@ -74,19 +74,43 @@ class SimpleEventDispatcherTest {
                 System.out.println(event);
                 eventPublisher.dispatch(1);
             }
-        }
-        final class Event2 {
+
             @EventListener
             void onTestEvent(Integer event, EventPublisher eventPublisher) {
                 System.out.println(event);
             }
         }
         eventPublisher.registerEvent(new Event1());
-        eventPublisher.registerEvent(new Event2());
 
         eventPublisher.dispatch("test event");
 
         String result = captor.toString().trim();
         assertThat(result).contains("test event", "1");
+    }
+
+    @Test
+    void 이벤트_타입으로_이벤트_퍼블리싱() {
+        OutputStream captor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(captor));
+
+        final class Event1 {
+            @EventListener
+            void onTestEvent(String event, EventPublisher eventPublisher) {
+                System.out.println(event);
+            }
+        }
+        final class Event2 {
+            @EventListener
+            void onTestEvent(String event, EventPublisher eventPublisher) {
+                System.out.println(event);
+            }
+        }
+        eventPublisher.registerEvent(new Event1());
+        eventPublisher.registerEvent(new Event2());
+
+        eventPublisher.dispatch(String.class, "hello");
+
+        String result = captor.toString().trim();
+        assertThat(result).isEqualTo("hello\nhello");
     }
 }

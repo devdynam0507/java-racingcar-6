@@ -14,17 +14,16 @@ import racingcar.handlers.InputEventHandler;
 
 public class Application {
     public static void main(String[] args) {
-        ApplicationContext applicationContext =
-                ApplicationContextBuilder.builder()
-                        .configuration(new EventConfiguration())
-                        .configuration(new GameConfiguration())
-                        .configuration(new InputConfiguration())
-                        .configuration(new ValidationConfiguration())
-                        .addListener(new EventListenerInjectHandler(
-                                CarEventHandler.class,
-                                InputEventHandler.class
-                        ))
-                        .build();
+        ApplicationContext applicationContext = ApplicationContextBuilder.builder()
+                .configuration(new EventConfiguration())
+                .configuration(new GameConfiguration())
+                .configuration(new InputConfiguration())
+                .configuration(new ValidationConfiguration())
+                .addListener(new EventListenerInjectHandler(
+                        CarEventHandler.class,
+                        InputEventHandler.class
+                ))
+                .build();
 
         EventPublisher eventPublisher = applicationContext.getInstance(EventPublisher.class);
         eventPublisher.dispatch(new InputEvent());
