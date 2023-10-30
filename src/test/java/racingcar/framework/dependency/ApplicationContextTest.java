@@ -1,7 +1,5 @@
 package racingcar.framework.dependency;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +15,8 @@ import racingcar.framework.dependency.objects.Target;
 import racingcar.framework.dependency.objects.TestObject;
 import racingcar.framework.dependency.objects.TestValueChild;
 import racingcar.framework.dependency.objects.TestValueObject;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationContextTest {
 

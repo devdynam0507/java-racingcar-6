@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class SimpleEventDispatcher implements EventPublisher {
 
     @Override
     public void registerEvent(Object eventListener) {
-        List<EventHolder> eventListeners = getEventListeners(eventListener, EventListener.class);
+        List<EventHolder> eventListeners = createEventListeners(eventListener, EventListener.class);
         eventListeners.forEach(eventHolder -> {
             listeners.computeIfAbsent(eventHolder.getEventType(), v -> new ArrayList<>()).add(eventHolder);
         });
@@ -41,10 +42,10 @@ public class SimpleEventDispatcher implements EventPublisher {
 
     @Override
     public List<EventHolder> getEventListener(Class<?> eventType) {
-        return listeners.get(eventType);
+        return listeners.getOrDefault(eventType, Collections.unmodifiableList(new ArrayList<>()));
     }
 
-    private List<EventHolder> getEventListeners(Object eventListener, Class<? extends Annotation> clazz) {
+    private List<EventHolder> createEventListeners(Object eventListener, Class<? extends Annotation> clazz) {
         List<MethodAnnotationHolder> methods =
             ReflectionUtils.getMethodsWithAnnotation(eventListener, clazz);
         List<EventHolder> eventHolders = new ArrayList<>();
